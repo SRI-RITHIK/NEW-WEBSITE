@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const form = document.getElementById('booking-form');
 
+    const scriptURL = "https://script.google.com/macros/s/AKfycbzZb0qmYoXDAWoPcZKgtJSZP8W5ra1m9PanGOoZvHvvFw5ShfS07CqVD-n8JFrw0NGIFA/exec";
+
     if (form) {
         form.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -13,20 +15,22 @@ document.addEventListener('DOMContentLoaded', () => {
             const location = document.getElementById('b-location').value;
             const message = document.getElementById('b-message').value;
 
-            const formURL = "https://docs.google.com/forms/d/e/1FAIpQLSdmFpMUV7dcl1OOegnOK8ZQ5W1Kt5YeROqD8KgASmrnUUCSpg/formResponse";
+            const data = {
+                name: name,
+                phone: phone,
+                service: service,
+                date: date,
+                location: location,
+                message: message
+            };
 
-            const formData = new FormData();
-            formData.append("entry.706825052", name);
-            formData.append("entry.490132020", phone);
-            formData.append("entry.94114696", service);
-            formData.append("entry.1185227348", date);
-            formData.append("entry.1640169105", location);
-            formData.append("entry.201337356", message);
-
-            fetch(formURL, {
+            fetch(scriptURL, {
                 method: "POST",
                 mode: "no-cors",
-                body: formData
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
             })
             .then(() => {
                 document.getElementById("booking-success").classList.remove("hidden");
