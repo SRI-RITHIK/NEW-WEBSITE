@@ -1,0 +1,17 @@
+html {
+    scroll-behavior: smooth;
+}
+.font-serif {
+    font-family: 'Cinzel', serif;
+}
+.font-sans {
+    font-family: 'Inter', sans-serif;
+}
+/* Hide scrollbar for gallery grids */
+.gallery-grid::-webkit-scrollbar {
+    display: none;
+}
+.gallery-grid {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
