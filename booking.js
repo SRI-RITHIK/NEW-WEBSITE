@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const form = document.getElementById('booking-form');
 
-    const scriptURL = "https://script.google.com/macros/s/AKfycbzZb0qmYoXDAWoPcZKgtJSZP8W5ra1m9PanGOoZvHvvFw5ShfS07CqVD-n8JFrw0NGIFA/exec";
+    const scriptURL = "https://script.google.com/macros/s/AKfycbyaM2du8IebER0tXHwN0J7lKRMujH5HXldjTz1qH1dt_2TfaAJLq5CAchOBBdPrD_R5lA/exec";
 
     if (form) {
         form.addEventListener('submit', function(e) {
