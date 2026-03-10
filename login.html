@@ -7,55 +7,91 @@
 <style>
 
 body{
-font-family: Arial;
-background: linear-gradient(135deg, #89f7fe, #66a6ff);
+font-family:Arial;
+background:black;
+background-image:url("https://images.pexels.com/photos/1341279/pexels-photo-1341279.jpeg");
+background-size:cover;
+background-position:center;
 height:100vh;
 display:flex;
 justify-content:center;
 align-items:center;
 margin:0;
+color:white;
 }
 
 .container{
-background:white;
+background:rgba(0,0,0,0.85);
 padding:40px;
-border-radius:10px;
-width:350px;
-box-shadow:0 10px 25px rgba(0,0,0,0.2);
+border-radius:12px;
+width:360px;
+box-shadow:0 0 20px rgba(255,255,255,0.2);
 text-align:center;
+backdrop-filter:blur(10px);
 }
 
 h2{
-margin-bottom:25px;
+margin-bottom:20px;
 }
 
 input{
 width:100%;
 padding:12px;
-margin:10px 0;
-border:1px solid #ccc;
-border-radius:5px;
+margin:8px 0;
+border-radius:6px;
+border:none;
 }
 
 button{
 width:100%;
 padding:12px;
-background:#ff4d6d;
+margin-top:10px;
+background:#6c63ff;
 border:none;
 color:white;
 font-size:16px;
-border-radius:5px;
+border-radius:6px;
 cursor:pointer;
-transition:0.3s;
 }
 
 button:hover{
-background:#e63950;
+background:#5750d4;
 }
 
-a{
-color:#ff4d6d;
+.google{
+background:#db4437;
+}
+
+.otp{
+background:#00b894;
+}
+
+.links{
+margin-top:10px;
+font-size:14px;
+}
+
+.links a{
+color:#9ecbff;
 text-decoration:none;
+}
+
+.password-box{
+position:relative;
+}
+
+.toggle{
+position:absolute;
+right:10px;
+top:14px;
+cursor:pointer;
+color:black;
+font-size:12px;
+}
+
+hr{
+margin:20px 0;
+border:1px solid #333;
 }
 
 </style>
@@ -69,14 +105,34 @@ text-decoration:none;
 
 <input id="email" type="email" placeholder="Enter Email">
 
-<input id="password" type="password" placeholder="Enter Password">
+<div class="password-box">
+<input id="password" type="password" placeholder="Password">
+<span class="toggle" onclick="togglePassword()">Show</span>
+</div>
 
-<button onclick="login()">Login</button>
+<button onclick="login()">Login with Password</button>
 
-<p style="margin-top:15px">
-Don't have an account?  
+<button class="google" onclick="googleLogin()">Login with Google</button>
+
+<hr>
+
+<h3>Login with OTP</h3>
+
+<button class="otp" onclick="sendOTP()">Send OTP to Email</button>
+
+<input id="otp" placeholder="Enter OTP">
+
+<button onclick="verifyOTP()">Verify OTP</button>
+
+<div class="links">
+
+<p><a href="#" onclick="resetPassword()">Forgot Password?</a></p>
+
+<p>Don't have an account?  
 <a href="signup.html">Create Account</a>
 </p>
+
+</div>
 
 </div>
 
@@ -84,26 +140,95 @@ Don't have an account?
 
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm"
 
-const supabaseUrl = "https://nbdzyvngupwrcaosocuv.supabase.co"
-const supabaseKey = "sb_publishable_awJpaCgSgcjjbR-ydrhO8A_ux1EHA9P"
+const supabaseUrl="https://nbdzyvngupwrcaosocuv.supabase.co"
+const supabaseKey="sb_publishable_awJpaCgSgcjjbR-ydrhO8A_ux1EHA9P"
 
-const supabase = createClient(supabaseUrl, supabaseKey)
+const supabase=createClient(supabaseUrl,supabaseKey)
 
-window.login = async function(){
+window.login=async function(){
 
-const email = document.getElementById("email").value
-const password = document.getElementById("password").value
+const email=document.getElementById("email").value
+const password=document.getElementById("password").value
 
-const { data, error } = await supabase.auth.signInWithPassword({
-email: email,
-password: password
+const {error}=await supabase.auth.signInWithPassword({
+email,
+password
 })
 
 if(error){
 alert(error.message)
 }else{
-alert("Login successful")
 window.location.href="index.html"
+}
+
+}
+
+window.googleLogin=async function(){
+
+await supabase.auth.signInWithOAuth({
+provider:"google"
+})
+
+}
+
+window.resetPassword=async function(){
+
+const email=document.getElementById("email").value
+
+if(!email){
+alert("Enter your email first")
+return
+}
+
+await supabase.auth.resetPasswordForEmail(email)
+
+alert("Password reset email sent")
+
+}
+
+window.sendOTP=async function(){
+
+const email=document.getElementById("email").value
+
+const {error}=await supabase.auth.signInWithOtp({
+email
+})
+
+if(error){
+alert(error.message)
+}else{
+alert("OTP sent to your email")
+}
+
+}
+
+window.verifyOTP=async function(){
+
+const email=document.getElementById("email").value
+const token=document.getElementById("otp").value
+
+const {error}=await supabase.auth.verifyOtp({
+email,
+token,
+type:"email"
+})
+
+if(error){
+alert(error.message)
+}else{
+window.location.href="index.html"
+}
+
+}
+
+window.togglePassword=function(){
+
+const password=document.getElementById("password")
+
+if(password.type==="password"){
+password.type="text"
+}else{
+password.type="password"
 }
 
 }
@@ -111,5 +236,4 @@ window.location.href="index.html"
 </script>
 
 </body>
-
 </html>
