@@ -5,234 +5,218 @@
 <title>Login</title>
 
 <style>
-
-body{
-font-family:Arial;
-background:black;
-background-image:url("https://images.pexels.com/photos/1341279/pexels-photo-1341279.jpeg");
-background-size:cover;
-background-position:center;
-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-margin:0;
-color:white;
+body {
+    font-family: Arial, sans-serif;
+    background: black;
+    background-image: url("https://images.pexels.com/photos/1341279/pexels-photo-1341279.jpeg");
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    color: white;
 }
 
-.container{
-background:rgba(0,0,0,0.85);
-padding:40px;
-border-radius:12px;
-width:360px;
-box-shadow:0 0 20px rgba(255,255,255,0.2);
-text-align:center;
-backdrop-filter:blur(10px);
+.container {
+    background: rgba(0,0,0,0.85);
+    padding: 40px;
+    border-radius: 12px;
+    width: 360px;
+    box-shadow: 0 0 20px rgba(255,255,255,0.2);
+    text-align: center;
+    backdrop-filter: blur(10px);
 }
 
-h2{
-margin-bottom:20px;
+h2 { margin-bottom: 20px; }
+
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 6px;
+    border: none;
+    box-sizing: border-box;
 }
 
-input{
-width:100%;
-padding:12px;
-margin:8px 0;
-border-radius:6px;
-border:none;
+/* Trendy Button Switch */
+.switch-wrapper {
+    display: flex;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 4px;
+    margin: 15px 0 20px 0;
+    position: relative;
+    cursor: pointer;
 }
 
-button{
-width:100%;
-padding:12px;
-margin-top:10px;
-background:#6c63ff;
-border:none;
-color:white;
-font-size:16px;
-border-radius:6px;
-cursor:pointer;
+.switch-btn {
+    flex: 1;
+    padding: 8px 0;
+    font-size: 14px;
+    z-index: 2;
+    transition: color 0.3s;
+    color: rgba(255,255,255,0.6);
 }
 
-button:hover{
-background:#5750d4;
+.switch-btn.active { color: white; }
+
+.switch-slider {
+    position: absolute;
+    width: calc(50% - 4px);
+    height: calc(100% - 8px);
+    background: #6c63ff;
+    border-radius: 6px;
+    top: 4px;
+    left: 4px;
+    transition: transform 0.3s ease;
+    z-index: 1;
 }
 
-.google{
-background:#db4437;
+.otp-mode .switch-slider { transform: translateX(100%); }
+
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    background: #6c63ff;
+    border: none;
+    color: white;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
 }
 
-.otp{
-background:#00b894;
+button:hover { background: #5750d4; }
+
+.otp-send-btn { background: #00b894; margin-bottom: 5px; }
+
+.links { margin-top: 20px; font-size: 14px; }
+.links a { color: #9ecbff; text-decoration: none; }
+
+.password-box { position: relative; }
+.toggle {
+    position: absolute;
+    right: 10px;
+    top: 14px;
+    cursor: pointer;
+    color: black;
+    font-size: 12px;
 }
 
-.links{
-margin-top:10px;
-font-size:14px;
-}
-
-.links a{
-color:#9ecbff;
-text-decoration:none;
-}
-
-.password-box{
-position:relative;
-}
-
-.toggle{
-position:absolute;
-right:10px;
-top:14px;
-cursor:pointer;
-color:black;
-font-size:12px;
-}
-
-hr{
-margin:20px 0;
-border:1px solid #333;
-}
-
+.hidden { display: none; }
 </style>
 </head>
 
 <body>
 
 <div class="container">
+    <h2>User Login</h2>
 
-<h2>User Login</h2>
+    <input id="email" type="email" placeholder="Enter Email">
 
-<input id="email" type="email" placeholder="Enter Email">
+    <div class="switch-wrapper" id="authSwitcher" onclick="toggleView()">
+        <div class="switch-slider"></div>
+        <div id="btn-pass" class="switch-btn active">Password</div>
+        <div id="btn-otp" class="switch-btn">OTP</div>
+    </div>
 
-<div class="password-box">
-<input id="password" type="password" placeholder="Password">
-<span class="toggle" onclick="togglePassword()">Show</span>
-</div>
+    <div id="pass-area">
+        <div class="password-box">
+            <input id="password" type="password" placeholder="Password">
+            <span class="toggle" onclick="togglePassword()">Show</span>
+        </div>
+        <button onclick="login()">Login</button>
+    </div>
 
-<button onclick="login()">Login with Password</button>
+    <div id="otp-area" class="hidden">
+        <button class="otp-send-btn" onclick="sendOTP()">Send OTP to Email</button>
+        <input id="otp" placeholder="Enter OTP">
+        <button onclick="verifyOTP()">Login</button>
+    </div>
 
-<button class="google" onclick="googleLogin()">Login with Google</button>
-
-<hr>
-
-<h3>Login with OTP</h3>
-
-<button class="otp" onclick="sendOTP()">Send OTP to Email</button>
-
-<input id="otp" placeholder="Enter OTP">
-
-<button onclick="verifyOTP()">Verify OTP</button>
-
-<div class="links">
-
-<p><a href="#" onclick="resetPassword()">Forgot Password?</a></p>
-
-<p>Don't have an account?  
-<a href="signup.html">Create Account</a>
-</p>
-
-</div>
-
+    <div class="links">
+        <p><a href="#" onclick="resetPassword()">Forgot Password?</a></p>
+        <p>Don't have an account? <a href="signup.html">Create Account</a></p>
+    </div>
 </div>
 
 <script type="module">
-
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm"
 
-const supabaseUrl="https://nbdzyvngupwrcaosocuv.supabase.co"
-const supabaseKey="sb_publishable_awJpaCgSgcjjbR-ydrhO8A_ux1EHA9P"
+const supabaseUrl = "https://nbdzyvngupwrcaosocuv.supabase.co"
+const supabaseKey = "sb_publishable_awJpaCgSgcjjbR-ydrhO8A_ux1EHA9P"
+const supabase = createClient(supabaseUrl, supabaseKey)
 
-const supabase=createClient(supabaseUrl,supabaseKey)
-
-window.login=async function(){
-
-const email=document.getElementById("email").value
-const password=document.getElementById("password").value
-
-const {error}=await supabase.auth.signInWithPassword({
-email,
-password
-})
-
-if(error){
-alert(error.message)
-}else{
-window.location.href="index.html"
+// CHECK SESSION ON LOAD
+const { data } = await supabase.auth.getSession()
+if(data.session){
+    window.location.href = "index.html"
 }
 
+let mode = 'password';
+
+// UI SWITCH LOGIC
+window.toggleView = function() {
+    const wrapper = document.getElementById('authSwitcher');
+    const passArea = document.getElementById('pass-area');
+    const otpArea = document.getElementById('otp-area');
+    const btnPass = document.getElementById('btn-pass');
+    const btnOtp = document.getElementById('btn-otp');
+
+    if (mode === 'password') {
+        mode = 'otp';
+        wrapper.classList.add('otp-mode');
+        passArea.classList.add('hidden');
+        otpArea.classList.remove('hidden');
+        btnPass.classList.remove('active');
+        btnOtp.classList.add('active');
+    } else {
+        mode = 'password';
+        wrapper.classList.remove('otp-mode');
+        passArea.classList.remove('hidden');
+        otpArea.classList.add('hidden');
+        btnPass.classList.add('active');
+        btnOtp.classList.remove('active');
+    }
 }
 
-window.googleLogin=async function(){
-
-await supabase.auth.signInWithOAuth({
-provider:"google"
-})
-
+window.login = async function(){
+    const email = document.getElementById("email").value
+    const password = document.getElementById("password").value
+    const {error} = await supabase.auth.signInWithPassword({ email, password })
+    if(error) alert(error.message)
+    else window.location.href = "index.html"
 }
 
-window.resetPassword=async function(){
-
-const email=document.getElementById("email").value
-
-if(!email){
-alert("Enter your email first")
-return
+window.sendOTP = async function(){
+    const email = document.getElementById("email").value
+    if(!email) return alert("Enter email first");
+    const {error} = await supabase.auth.signInWithOtp({ email })
+    if(error) alert(error.message)
+    else alert("OTP sent to your email")
 }
 
-await supabase.auth.resetPasswordForEmail(email)
-
-alert("Password reset email sent")
-
+window.verifyOTP = async function(){
+    const email = document.getElementById("email").value
+    const token = document.getElementById("otp").value
+    const {error} = await supabase.auth.verifyOtp({ email, token, type: "email" })
+    if(error) alert(error.message)
+    else window.location.href = "index.html"
 }
 
-window.sendOTP=async function(){
-
-const email=document.getElementById("email").value
-
-const {error}=await supabase.auth.signInWithOtp({
-email
-})
-
-if(error){
-alert(error.message)
-}else{
-alert("OTP sent to your email")
+window.resetPassword = async function(){
+    const email = document.getElementById("email").value
+    if(!email) return alert("Enter your email first")
+    await supabase.auth.resetPasswordForEmail(email)
+    alert("Password reset email sent")
 }
 
+window.togglePassword = function(){
+    const password = document.getElementById("password")
+    password.type = (password.type === "password") ? "text" : "password";
 }
-
-window.verifyOTP=async function(){
-
-const email=document.getElementById("email").value
-const token=document.getElementById("otp").value
-
-const {error}=await supabase.auth.verifyOtp({
-email,
-token,
-type:"email"
-})
-
-if(error){
-alert(error.message)
-}else{
-window.location.href="index.html"
-}
-
-}
-
-window.togglePassword=function(){
-
-const password=document.getElementById("password")
-
-if(password.type==="password"){
-password.type="text"
-}else{
-password.type="password"
-}
-
-}
-
 </script>
 
 </body>
